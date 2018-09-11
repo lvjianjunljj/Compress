@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\snappy">
+      <UniqueIdentifier>{bb5a5604-c84d-43c3-a556-a5f1fd4c4e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\file">
+      <UniqueIdentifier>{4df38942-710a-47f2-8717-1adcadec7769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\snappy">
+      <UniqueIdentifier>{f67949c3-d471-4f8b-9b90-a825a9fd912e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\file">
+      <UniqueIdentifier>{0ddae194-c8a4-48ba-aae8-f178a1aa9456}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="snappy.h">
+      <Filter>Header Files\snappy</Filter>
+    </ClInclude>
+    <ClInclude Include="snappy-c.h">
+      <Filter>Header Files\snappy</Filter>
+    </ClInclude>
+    <ClInclude Include="snappy-internal.h">
+      <Filter>Header Files\snappy</Filter>
+    </ClInclude>
+    <ClInclude Include="snappy-sinksource.h">
+      <Filter>Header Files\snappy</Filter>
+    </ClInclude>
+    <ClInclude Include="snappy-stubs-internal.h">
+      <Filter>Header Files\snappy</Filter>
+    </ClInclude>
+    <ClInclude Include="snappy-stubs-public.h">
+      <Filter>Header Files\snappy</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>Header Files\file</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="snappy.cc">
+      <Filter>Resource Files\snappy</Filter>
+    </ClCompile>
+    <ClCompile Include="snappy-c.cc">
+      <Filter>Resource Files\snappy</Filter>
+    </ClCompile>
+    <ClCompile Include="snappy-sinksource.cc">
+      <Filter>Resource Files\snappy</Filter>
+    </ClCompile>
+    <ClCompile Include="snappy-stubs-internal.cc">
+      <Filter>Resource Files\snappy</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>Resource Files\file</Filter>
+    </ClCompile>
+    <ClCompile Include="Run.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
