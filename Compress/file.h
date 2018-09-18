@@ -1,12 +1,15 @@
 #include <string>  
 #include <fstream>
 #include <iostream>
+#include <vector>
+#include <map>
 using namespace std;
 
 namespace File
 {
-	void ReadFileToStringOrDie(const char* filename, string* data);
-
-
-	void WriteStringToFileOrDie(const string& str, const char* filename);
+	int ReadFileToStringOrDie(const char* inputFilePath, string* data);
+	int WriteStringToFileOrDie(const string& data, const char* outputFilePath);
+	vector<string> folderTraversalSingleLayerName(string dirPath);
+	map<string, int> folderTraversalSingleLayerNameSize(string dirPath);
+	void Txt2Binary(const char* inputFilePath, const char* outputFilePath);
 }
