@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="file.cpp" />
+    <ClCompile Include="fileDiscard.cpp" />
     <ClCompile Include="FileCompress2.cpp" />
     <ClCompile Include="lzss.cpp" />
     <ClCompile Include="Run.cpp" />

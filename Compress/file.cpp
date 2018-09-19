@@ -1,58 +1,43 @@
 #include "file.h"  
-#include <cstdio>  
-#include <cstdlib> 
+#include <string>  
+#include <fstream>
+#include <iostream>
+#include <sstream> 
 #include <io.h>
 #pragma warning(disable:4996)
 
 namespace File
 {
-	int ReadFileToStringOrDie(const char* inputFilePath, string* data)
+	long ReadFileToStringOrDie(const char* inputFilePath, string* data)
 	{
-		FILE* fp = fopen(inputFilePath, "rb");
-		if (fp == NULL)
-		{
-			perror(inputFilePath);
-			exit(1);
+		ifstream in(inputFilePath, ios::in);
+		if (in.is_open()) {
+			stringstream buffer;
+			buffer << in.rdbuf();
+			data->append(buffer.str());
+			long fileSize = in.tellg();
+			in.close();
+			return fileSize;
 		}
-
-		data->clear();
-		while (!feof(fp))
-		{
-			char buf[4096];
-			size_t ret = fread(buf, 1, 4096, fp);
-			if (ret == 0 && ferror(fp))
-			{
-				perror("fread");
-				exit(1);
-			}
-			data->append(string(buf, ret));
+		else {
+			return -1;
 		}
-		int fileSize = ftell(fp);
-		fclose(fp);
-
-		return fileSize;
 	}
 
-	int WriteStringToFileOrDie(const string& data, const char* outputFilePath)
+	long WriteStringToFileOrDie(const string& data, const char* outputFilePath)
 	{
-		FILE* fp = fopen(outputFilePath, "wb");
-		if (fp == NULL)
+		ofstream out(outputFilePath, ios::trunc);
+		if (out.is_open())
 		{
-			perror(outputFilePath);
-			exit(1);
+			out << data;
+			long fileSize = out.tellp();
+			out.close();
+			return fileSize;
 		}
-
-		int ret = fwrite(data.data(), data.size(), 1, fp);
-		if (ret != 1)
-		{
-			perror("fwrite");
-			exit(1);
+		else {
+			return -1;
 		}
-		int fileSize = ftell(fp);
-		fclose(fp);
-		return fileSize;
 	}
-
 
 	struct
 	{
@@ -112,78 +97,78 @@ namespace File
 		return fileMap;
 	}
 
-	// Useless function
-	void Txt2BinaryFail(const char* inputFilePath, const char* outputFilePath)
-	{
-		string data = "";
-		FILE* fp = fopen(inputFilePath, "r");
-		if (fp == NULL)
-		{
-			perror(inputFilePath);
-			exit(1);
-		}
+	//// Useless function
+	//void Txt2BinaryFail(const char* inputFilePath, const char* outputFilePath)
+	//{
+	//	string data = "";
+	//	FILE* fp = fopen(inputFilePath, "r");
+	//	if (fp == NULL)
+	//	{
+	//		perror(inputFilePath);
+	//		exit(1);
+	//	}
 
-		while (!feof(fp))
-		{
-			char buf[4096];
-			size_t ret = fread(buf, 1, 4096, fp);
-			if (ret == 0 && ferror(fp))
-			{
-				perror("fread");
-				exit(1);
-			}
-			data.append(string(buf, ret));
-		}
-		cout << data << endl;
-		fclose(fp);
+	//	while (!feof(fp))
+	//	{
+	//		char buf[4096];
+	//		size_t ret = fread(buf, 1, 4096, fp);
+	//		if (ret == 0 && ferror(fp))
+	//		{
+	//			perror("fread");
+	//			exit(1);
+	//		}
+	//		data.append(string(buf, ret));
+	//	}
+	//	cout << data << endl;
+	//	fclose(fp);
 
-		ofstream ofs;
-		ofs.open(outputFilePath, ios::out | ios::binary);
-		if (!ofs.is_open())
-		{
-			cout << "open out file fail!" << endl;
-			return;
-		}
-		ofs.write(data.c_str(), strlen(data.c_str()));
-		ofs.close();
-	}
+	//	ofstream ofs;
+	//	ofs.open(outputFilePath, ios::out | ios::binary);
+	//	if (!ofs.is_open())
+	//	{
+	//		cout << "open out file fail!" << endl;
+	//		return;
+	//	}
+	//	ofs.write(data.c_str(), strlen(data.c_str()));
+	//	ofs.close();
+	//}
 
-	// Useless function 
-	void Txt2Binary(const char* inputFilePath, const char* outputFilePath)
-	{
-		FILE *fp;
+	//// Useless function 
+	//void Txt2Binary(const char* inputFilePath, const char* outputFilePath)
+	//{
+	//	FILE *fp;
 
-		string data = "";
-		fp = fopen(inputFilePath, "r");
-		if (fp == NULL)
-		{
-			perror(inputFilePath);
-			exit(1);
-		}
+	//	string data = "";
+	//	fp = fopen(inputFilePath, "r");
+	//	if (fp == NULL)
+	//	{
+	//		perror(inputFilePath);
+	//		exit(1);
+	//	}
 
-		while (!feof(fp))
-		{
-			char buf[4096];
-			size_t ret = fread(buf, 1, 4096, fp);
-			if (ret == 0 && ferror(fp))
-			{
-				perror("fread");
-				exit(1);
-			}
-			data.append(string(buf, ret));
-		}
-		cout << data << endl;
-		fclose(fp);
+	//	while (!feof(fp))
+	//	{
+	//		char buf[4096];
+	//		size_t ret = fread(buf, 1, 4096, fp);
+	//		if (ret == 0 && ferror(fp))
+	//		{
+	//			perror("fread");
+	//			exit(1);
+	//		}
+	//		data.append(string(buf, ret));
+	//	}
+	//	cout << data << endl;
+	//	fclose(fp);
 
-		//fp = fopen("D:\\data\\company work\\PDI\\test data\\3test", "wt");
-		//fprintf(fp, "%d", i);
-		//fclose(fp);
+	//	//fp = fopen("D:\\data\\company work\\PDI\\test data\\3test", "wt");
+	//	//fprintf(fp, "%d", i);
+	//	//fclose(fp);
 
-		fp = fopen(outputFilePath, "wb");
-		fwrite(&data, sizeof(data), 1, fp);
-		fclose(fp);
-		fp = fopen("D:\\data\\company work\\PDI\\test data\\3_binary2", "wt");
-		fprintf(fp, "%d", data);
-		fclose(fp);
-	}
+	//	fp = fopen(outputFilePath, "wb");
+	//	fwrite(&data, sizeof(data), 1, fp);
+	//	fclose(fp);
+	//	fp = fopen("D:\\data\\company work\\PDI\\test data\\3_binary2", "wt");
+	//	fprintf(fp, "%d", data);
+	//	fclose(fp);
+	//}
 }

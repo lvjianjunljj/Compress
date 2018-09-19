@@ -101,9 +101,6 @@
     <ClCompile Include="snappy-stubs-internal.cc">
       <Filter>Resource Files\snappy</Filter>
     </ClCompile>
-    <ClCompile Include="file.cpp">
-      <Filter>Resource Files\file</Filter>
-    </ClCompile>
     <ClCompile Include="Run.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -115,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="lzss.cpp">
       <Filter>Resource Files\lz77</Filter>
+    </ClCompile>
+    <ClCompile Include="fileDiscard.cpp">
+      <Filter>Resource Files\file</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>Resource Files\file</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
