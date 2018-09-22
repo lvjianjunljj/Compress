@@ -1,5 +1,5 @@
 #pragma once
-#include "HuffmanTree1.hpp"
+#include "huffman-tree1.hpp"
 #include <Windows.h>
 #include <iostream>
 #pragma warning(disable:4996)

@@ -3,8 +3,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include "HuffmanTree2.hpp"
-#include "FileCompress2.h"
+#include "huffman-tree2.hpp"
+#include "file-compress2.h"
 
 #define _SIZE_ 1024
 #define _FILE_NAME_SIZE_ 128

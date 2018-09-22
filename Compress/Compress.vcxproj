@@ -139,14 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Compressor.h" />
+    <ClInclude Include="compressor.h" />
     <ClInclude Include="file.h" />
-    <ClInclude Include="FileCompress2.h" />
-    <ClInclude Include="FileCompress1.hpp" />
-    <ClInclude Include="Heap1.hpp" />
-    <ClInclude Include="HuffmanTree2.hpp" />
-    <ClInclude Include="HuffmanTree1.hpp" />
+    <ClInclude Include="file-compress2.h" />
+    <ClInclude Include="file-compress1.hpp" />
+    <ClInclude Include="heap1.hpp" />
+    <ClInclude Include="huffman-tree2.hpp" />
+    <ClInclude Include="huffman-tree1.hpp" />
     <ClInclude Include="lzss.h" />
+    <ClInclude Include="operator.h" />
     <ClInclude Include="snappy-c.h" />
     <ClInclude Include="snappy-internal.h" />
     <ClInclude Include="snappy-sinksource.h" />
@@ -155,12 +156,13 @@
     <ClInclude Include="snappy.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Compressor.cpp" />
+    <ClCompile Include="compressor.cpp" />
     <ClCompile Include="file.cpp" />
-    <ClCompile Include="fileDiscard.cpp" />
-    <ClCompile Include="FileCompress2.cpp" />
+    <ClCompile Include="file-discard.cpp" />
+    <ClCompile Include="file-compress2.cpp" />
     <ClCompile Include="lzss.cpp" />
-    <ClCompile Include="Run.cpp" />
+    <ClCompile Include="operator.cpp" />
+    <ClCompile Include="run.cpp" />
     <ClCompile Include="snappy-c.cc" />
     <ClCompile Include="snappy-sinksource.cc" />
     <ClCompile Include="snappy-stubs-internal.cc" />

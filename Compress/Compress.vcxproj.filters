@@ -16,9 +16,6 @@
     <Filter Include="Header Files\snappy">
       <UniqueIdentifier>{bb5a5604-c84d-43c3-a556-a5f1fd4c4e62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\file">
-      <UniqueIdentifier>{4df38942-710a-47f2-8717-1adcadec7769}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\snappy">
       <UniqueIdentifier>{f67949c3-d471-4f8b-9b90-a825a9fd912e}</UniqueIdentifier>
     </Filter>
@@ -37,10 +34,10 @@
     <Filter Include="Header Files\huffman\demo2">
       <UniqueIdentifier>{8163fc04-e830-428f-9642-b4bca85f3319}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\lz77">
+    <Filter Include="Header Files\lzss">
       <UniqueIdentifier>{fc450736-1510-4bef-a673-896d60493947}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\lz77">
+    <Filter Include="Resource Files\lzss">
       <UniqueIdentifier>{570b2b74-2e47-4fb8-af05-440a77f33019}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -63,29 +60,32 @@
     <ClInclude Include="snappy-stubs-public.h">
       <Filter>Header Files\snappy</Filter>
     </ClInclude>
-    <ClInclude Include="file.h">
-      <Filter>Header Files\file</Filter>
-    </ClInclude>
-    <ClInclude Include="FileCompress1.hpp">
-      <Filter>Header Files\huffman\demo1</Filter>
-    </ClInclude>
-    <ClInclude Include="Heap1.hpp">
-      <Filter>Header Files\huffman\demo1</Filter>
-    </ClInclude>
-    <ClInclude Include="HuffmanTree1.hpp">
-      <Filter>Header Files\huffman\demo1</Filter>
-    </ClInclude>
-    <ClInclude Include="FileCompress2.h">
-      <Filter>Header Files\huffman\demo2</Filter>
-    </ClInclude>
-    <ClInclude Include="HuffmanTree2.hpp">
-      <Filter>Header Files\huffman\demo2</Filter>
-    </ClInclude>
-    <ClInclude Include="Compressor.h">
-      <Filter>Header Files\lz77</Filter>
-    </ClInclude>
     <ClInclude Include="lzss.h">
-      <Filter>Header Files\lz77</Filter>
+      <Filter>Header Files\lzss</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compressor.h">
+      <Filter>Header Files\lzss</Filter>
+    </ClInclude>
+    <ClInclude Include="operator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="heap1.hpp">
+      <Filter>Header Files\huffman\demo1</Filter>
+    </ClInclude>
+    <ClInclude Include="file-compress1.hpp">
+      <Filter>Header Files\huffman\demo1</Filter>
+    </ClInclude>
+    <ClInclude Include="huffman-tree1.hpp">
+      <Filter>Header Files\huffman\demo1</Filter>
+    </ClInclude>
+    <ClInclude Include="file-compress2.h">
+      <Filter>Header Files\huffman\demo2</Filter>
+    </ClInclude>
+    <ClInclude Include="huffman-tree2.hpp">
+      <Filter>Header Files\huffman\demo2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,23 +101,26 @@
     <ClCompile Include="snappy-stubs-internal.cc">
       <Filter>Resource Files\snappy</Filter>
     </ClCompile>
-    <ClCompile Include="Run.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FileCompress2.cpp">
-      <Filter>Resource Files\huffman</Filter>
-    </ClCompile>
-    <ClCompile Include="Compressor.cpp">
-      <Filter>Resource Files\lz77</Filter>
-    </ClCompile>
     <ClCompile Include="lzss.cpp">
-      <Filter>Resource Files\lz77</Filter>
-    </ClCompile>
-    <ClCompile Include="fileDiscard.cpp">
-      <Filter>Resource Files\file</Filter>
+      <Filter>Resource Files\lzss</Filter>
     </ClCompile>
     <ClCompile Include="file.cpp">
       <Filter>Resource Files\file</Filter>
+    </ClCompile>
+    <ClCompile Include="operator.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="run.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file-discard.cpp">
+      <Filter>Resource Files\file</Filter>
+    </ClCompile>
+    <ClCompile Include="file-compress2.cpp">
+      <Filter>Resource Files\huffman</Filter>
+    </ClCompile>
+    <ClCompile Include="compressor.cpp">
+      <Filter>Resource Files\lzss</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
