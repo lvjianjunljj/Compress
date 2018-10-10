@@ -125,6 +125,58 @@ namespace Operator {
 			cout << "log file open error!!!" << endl;
 		}
 	}
+	void testSnappy(string binaryDirPath, string logFilePrefixName) {
+		time_t nowtime;
+		nowtime = time(NULL); //Get current time  
+		struct tm *local;
+		local = localtime(&nowtime);  //Get current system time  
+		string timeStr = to_string(local->tm_year + 1900) +
+			"_" + to_string(local->tm_mon + 1) +
+			"_" + to_string(local->tm_mday) +
+			"_" + to_string(local->tm_hour) +
+			"_" + to_string(local->tm_min) +
+			"_" + to_string(local->tm_sec);
+
+		string logFilePath = logFilePrefixName + timeStr + ".log";
+
+		vector<string> fileList = File::folderTraversalSingleLayerName(binaryDirPath);
+		ofstream out(logFilePath, ios::trunc);
+		if (out.is_open())
+		{
+			// Timing tool
+			LARGE_INTEGER  qFreq, qCouStart, qCouEnd;
+			for (string fileName : fileList) {
+				string binaryFilePath = binaryDirPath + "\\" + fileName;
+				string compressInstr, compressOutstr, uncompressOutstr;
+
+				int binaryFileSize = File::ReadFileToStringOrDie(binaryFilePath.c_str(), &compressInstr);
+				QueryPerformanceFrequency(&qFreq);
+				QueryPerformanceCounter(&qCouStart);
+				snappy::Compress(compressInstr.data(), compressInstr.size(), &compressOutstr);
+				QueryPerformanceCounter(&qCouEnd);
+				double compressTimeCost = (qCouEnd.QuadPart - qCouStart.QuadPart) / (double)qFreq.QuadPart;
+				int compressFileSize = compressOutstr.length();
+
+				QueryPerformanceFrequency(&qFreq);
+				QueryPerformanceCounter(&qCouStart);
+				snappy::Uncompress(compressOutstr.data(), compressOutstr.size(), &uncompressOutstr);
+				QueryPerformanceCounter(&qCouEnd);
+				double uncompressTimeCost = (qCouEnd.QuadPart - qCouStart.QuadPart) / (double)qFreq.QuadPart;
+				int uncompressFileSize = uncompressOutstr.length();
+
+				out << binaryFileSize << "\t"
+					<< compressFileSize << "\t"
+					<< uncompressFileSize << "\t"
+					<< compressTimeCost * 1000000 << "\t"
+					<< uncompressTimeCost * 1000000 << endl;
+			}
+			out.close();
+		}
+		else {
+			cout << "log file open error!!!" << endl;
+		}
+
+	}
 
 	void testHuffmanCompress1() {
 		FileCompress<CharInfo> compress;
@@ -294,6 +346,68 @@ namespace Operator {
 			cout << "log file open error!!!" << endl;
 		}
 	}
+	void testLzss(string binaryDirPath, string logFilePrefixName) {
+		time_t nowtime;
+		nowtime = time(NULL); //Get current time  
+		struct tm *local;
+		local = localtime(&nowtime);  //Get current system time  
+		string timeStr = to_string(local->tm_year + 1900) +
+			"_" + to_string(local->tm_mon + 1) +
+			"_" + to_string(local->tm_mday) +
+			"_" + to_string(local->tm_hour) +
+			"_" + to_string(local->tm_min) +
+			"_" + to_string(local->tm_sec);
+
+		string logFilePath = logFilePrefixName + timeStr + ".log";
+
+		vector<string> fileList = File::folderTraversalSingleLayerName(binaryDirPath);
+		ofstream out(logFilePath, ios::trunc);
+		if (out.is_open())
+		{
+			// Timing tool
+			LARGE_INTEGER  qFreq, qCouStart, qCouEnd;
+			for (string fileName : fileList) {
+				string binaryFilePath = binaryDirPath + "\\" + fileName;
+				string compressInstr;
+
+				int binaryFileSize = File::ReadFileToStringOrDie(binaryFilePath.c_str(), &compressInstr);
+				LZSS lzss;
+
+				unsigned char *compressOutstr = new unsigned char[compressInstr.size() * 2];
+				QueryPerformanceFrequency(&qFreq);
+				QueryPerformanceCounter(&qCouStart);
+
+				int compressFileSize = lzss.Compress((unsigned char*)compressInstr.c_str(),
+					compressInstr.size(), compressOutstr);
+				QueryPerformanceCounter(&qCouEnd);
+				double compressTimeCost = (qCouEnd.QuadPart - qCouStart.QuadPart) / (double)qFreq.QuadPart;
+
+
+
+				unsigned char *uncompressOutstr = new unsigned char[compressInstr.size() * 2];
+				QueryPerformanceFrequency(&qFreq);
+				QueryPerformanceCounter(&qCouStart);
+
+				int uncompressFileSize = lzss.UnCompress(compressOutstr, compressFileSize, uncompressOutstr);
+				QueryPerformanceCounter(&qCouEnd);
+				double uncompressTimeCost = (qCouEnd.QuadPart - qCouStart.QuadPart) / (double)qFreq.QuadPart;
+				delete compressOutstr;
+				delete uncompressOutstr;
+
+
+				out << binaryFileSize << "\t"
+					<< compressFileSize << "\t"
+					<< uncompressFileSize << "\t"
+					<< compressTimeCost * 1000000 << "\t"
+					<< uncompressTimeCost * 1000000 << endl;
+			}
+			out.close();
+		}
+		else {
+			cout << "log file open error!!!" << endl;
+		}
+
+	}
 
 	int changeToApproximateInt(int inputNum, int effectiveNum) {
 		int level = 0;
@@ -331,7 +445,17 @@ namespace Operator {
 		}
 		return sum / nums.size();
 	}
+	float getAverage(vector<float>& nums) {
+		float sum = 0;
+		for (float i : nums) {
+			sum += i;
+		}
+		return sum / nums.size();
+	}
 	int getMedian(vector<int>& nums) {
+		return nums[nums.size() / 2];
+	}
+	float getMedian(vector<float>& nums) {
 		return nums[nums.size() / 2];
 	}
 
@@ -339,7 +463,7 @@ namespace Operator {
 		int effectiveNum = 3;
 
 		map<int, vector<int>> compressSizeMap;
-		map<int, vector<int>> timeMap;
+		map<int, vector<float>> compressTimeMap;
 		char buffer[256];
 		fstream out;
 		out.open(compressLogFilePath, ios::in);
@@ -348,18 +472,17 @@ namespace Operator {
 			out.getline(buffer, 256, '\n');//getline(char *,int,char) 
 			vector<string> v;
 			split(buffer, "\t", &v);
-			if (v.size() < 3) {
-				continue;
+			if (v.size() == 3) {
+				int fileSize = changeToApproximateInt(atoi(v[0].c_str()), effectiveNum);
+				if (!compressSizeMap.count(fileSize)) {
+					compressSizeMap[fileSize] = vector<int>();
+				}
+				if (!compressTimeMap.count(fileSize)) {
+					compressTimeMap[fileSize] = vector<float>();
+				}
+				compressSizeMap[fileSize].push_back(atoi(v[1].c_str()));
+				compressTimeMap[fileSize].push_back(atof(v[2].c_str()));
 			}
-			int fileSize = changeToApproximateInt(atoi(v[0].c_str()), effectiveNum);
-			if (!compressSizeMap.count(fileSize)) {
-				compressSizeMap[fileSize] = vector<int>();
-			}
-			if (!timeMap.count(fileSize)) {
-				timeMap[fileSize] = vector<int>();
-			}
-			compressSizeMap[fileSize].push_back(atoi(v[1].c_str()));
-			timeMap[fileSize].push_back(atoi(v[2].c_str()));
 		}
 		out.close();
 		ofstream output(countCompressLogFilePath, ios::trunc);
@@ -367,15 +490,18 @@ namespace Operator {
 		{
 			for (map<int, vector<int>>::iterator my_Itr = compressSizeMap.begin(); my_Itr != compressSizeMap.end(); ++my_Itr) {
 				vector<int> compressSizeVec = my_Itr->second;
-				vector<int> timeVec = timeMap[my_Itr->first];
-				int saveValue;
+				vector<float> compressTimeVec = compressTimeMap[my_Itr->first];
+				int sizeValue, timeValue;
 				if (valueRule == "average") {
-					saveValue = getAverage(compressSizeVec);
+					sizeValue = getAverage(compressSizeVec);
+					timeValue = getAverage(compressTimeVec);
 				}
 				else {
-					saveValue = getMedian(compressSizeVec);
+					sizeValue = getMedian(compressSizeVec);
+					timeValue = getMedian(compressTimeVec);
+
 				}
-				output << my_Itr->first << "\t" << saveValue << "\t" << getAverage(timeVec) << endl;
+				output << my_Itr->first << "\t" << sizeValue << "\t" << timeValue << endl;
 			}
 			output.close();
 		}
@@ -383,6 +509,60 @@ namespace Operator {
 			cout << "log file open error!!!" << endl;
 		}
 	}
+	void countCompressDataFromLog(string compressLogFilePath, string countCompressLogFilePath, string valueRule) {
+		int effectiveNum = 3, splitLen = 0;
+
+		map<int, vector<vector<float>>> compressDataMap;
+		char buffer[256];
+		fstream out;
+		out.open(compressLogFilePath, ios::in);
+		while (!out.eof())
+		{
+			out.getline(buffer, 256, '\n');//getline(char *,int,char) 
+			vector<string> strLineVec;
+			split(buffer, "\t", &strLineVec);
+			if (splitLen == 0) {
+				splitLen = strLineVec.size();
+			}
+			if (strLineVec.size() == splitLen) {
+				int fileSize = changeToApproximateInt(atoi(strLineVec[0].c_str()), effectiveNum);
+				if (!compressDataMap.count(fileSize)) {
+					compressDataMap[fileSize] = vector<vector<float>>();
+					for (int i = 1; i < splitLen; i++) {
+						compressDataMap[fileSize].push_back(vector<float>());
+					}
+				}
+				for (int i = 1; i < splitLen; i++) {
+					compressDataMap[fileSize][i - 1].push_back(atof(strLineVec[i].c_str()));
+				}
+			}
+		}
+		out.close();
+		ofstream output(countCompressLogFilePath, ios::trunc);
+		if (output.is_open())
+		{
+			for (map<int, vector<vector<float>>>::iterator my_Itr = compressDataMap.begin(); my_Itr != compressDataMap.end(); ++my_Itr) {
+				vector<vector<float>> compressData = my_Itr->second;
+				output << my_Itr->first;
+				if (valueRule == "average") {
+					for (vector<float> dataLine : compressData) {
+						output << "\t" << getAverage(dataLine);
+					}
+				}
+				else {
+					for (vector<float> dataLine : compressData) {
+						output << "\t" << getMedian(dataLine);
+					}
+				}
+				output << endl;
+			}
+			output.close();
+		}
+		else {
+			cout << "log file open error!!!" << endl;
+		}
+	}
+
 	void countCompressSizeFromFile(string binaryDirPath, string compressDirPath, string logFilePrefixName) {
 		time_t nowtime;
 		nowtime = time(NULL); //Get current time  
@@ -535,5 +715,33 @@ namespace Operator {
 			start += blobDataEachLen;
 		}
 		delete dest;
+	}
+	void printCompressInfoFromLog(string compressLogFilePath) {
+		int lineDataCount = 0;
+		char buffer[256];
+		fstream out;
+		out.open(compressLogFilePath, ios::in);
+		vector<long long> sumData;
+		while (!out.eof())
+		{
+			out.getline(buffer, 256, '\n');//getline(char *,int,char) 
+			vector<string> lineDataVec;
+			split(buffer, "\t", &lineDataVec);
+			if (lineDataCount == 0) {
+				lineDataCount = lineDataVec.size();
+				for (int i = 0; i < lineDataCount; i++) {
+					sumData.push_back(0);
+				}
+			}
+			if (lineDataVec.size() == lineDataCount) {
+				for (int i = 0; i < lineDataCount; i++) {
+					sumData[i] += atoi(lineDataVec[i].c_str());
+				}
+			}
+		}
+		out.close();
+		for (long long sum : sumData) {
+			cout << sum << endl;
+		}
 	}
 }

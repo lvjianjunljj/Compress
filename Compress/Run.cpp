@@ -1,6 +1,7 @@
 #include <iostream>  
 #include <string>
 #include <io.h>
+#include <vector>
 #include "Operator.h"
 using namespace std;
 int main(int argc, char *argv[]) {
@@ -48,6 +49,10 @@ int main(int argc, char *argv[]) {
 		Operator::uncompressSnappy(inputDirPath, outputDirPath, logFilePrefixName);
 		cout << "uncompress file with snappy complete!!!" << endl;
 	}
+	else if (methodName == "testSnappy") {
+		Operator::testSnappy(inputDirPath, logFilePrefixName);
+		cout << "snappy compression method test complete!!!" << endl;
+	}
 	else if (methodName == "compressLzss") {
 		Operator::compressLzss(inputDirPath, outputDirPath, logFilePrefixName);
 		cout << "compress file with lzss complete!!!" << endl;
@@ -56,10 +61,19 @@ int main(int argc, char *argv[]) {
 		Operator::uncompressLzss(inputDirPath, outputDirPath, logFilePrefixName);
 		cout << "uncompress file with lzss complete!!!" << endl;
 	}
+	else if (methodName == "testLzss") {
+		Operator::testLzss(inputDirPath, logFilePrefixName);
+		cout << "lzss compression method test complete!!!" << endl;
+	}
 	else if (methodName == "countCompressSizeFromLog") {
 		// The input name is not suitable, but this kind of writing is relatively simple
 		Operator::countCompressSizeFromLog(inputDirPath, outputDirPath, logFilePrefixName);
 		cout << "count compress size from log complete!!!" << endl;
+	}
+	else if (methodName == "countCompressDataFromLog") {
+		// The input name is not suitable, but this kind of writing is relatively simple
+		Operator::countCompressDataFromLog(inputDirPath, outputDirPath, logFilePrefixName);
+		cout << "count compress data from log complete!!!" << endl;
 	}
 	else if (methodName == "countCompressSizeFromFile") {
 		Operator::countCompressSizeFromFile(inputDirPath, outputDirPath, logFilePrefixName);
@@ -76,6 +90,10 @@ int main(int argc, char *argv[]) {
 	else if (methodName == "printDocContentBasedonBinary") {
 		Operator::printDocContentBasedonBinary(inputDirPath);
 		cout << "log data summary complete!!!" << endl;
+	}
+	else if (methodName == "printCompressInfoFromLog") {
+		Operator::printCompressInfoFromLog(inputDirPath);
+		cout << "printcCompress information from log file complete!!!" << endl;
 	}
 	else {
 		cout << "not exist the method: " << methodName << endl;
